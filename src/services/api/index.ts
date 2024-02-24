@@ -10,10 +10,11 @@ const endPoint = {
     create: `${API}/${VERSION}/users`,
   },
   dreams: {
-    create: `${API}/${VERSION}/dreams/`,
-    get: `${API}/${VERSION}/dreams/`,
+    create: `${API}/${VERSION}/dreams`,
+    get: `${API}/${VERSION}/dreams`,
     getOne: (id: string) => `${API}/${VERSION}/dreams/${id}`
-  }
+  },
+  favorites: `${API}/${VERSION}/favorite`,
 }
 
 export default endPoint;

@@ -20,6 +20,7 @@ export default function Singup() {
     const name = nameRef?.current?.value;
     const lastName = lastNameRef?.current?.value;
     const username = usernameRef?.current?.value;
+    const pictureUrl = 'https://www.readersdigest.com.au/wp-content/uploads/2020/12/cat-lying-on-back-British-mackerel-shutterstock-e1573490045672-scaled.jpg'
 
     auth
       .signUp({email, password, name, lastName, username})
@@ -44,10 +45,10 @@ export default function Singup() {
       >
         <div className="flex items-center justify-center flex-col gap-6">
           <h1 className="font-sans text-4xl font-bold">Create Account</h1>
-          <input ref={nameRef} className={inputStyle} type="text" placeholder="Name" />
-          <input ref={lastNameRef} className={inputStyle} type="text" placeholder="Last Name" />
-          <input ref={usernameRef} className={inputStyle} type="text" placeholder="Username" />
-          <input ref={emailRef} className={inputStyle} type="text" placeholder="Email" />
+          <input required ref={nameRef} className={inputStyle} type="text" placeholder="Name" />
+          <input required ref={lastNameRef} className={inputStyle} type="text" placeholder="Last Name" />
+          <input required ref={usernameRef} className={inputStyle} type="text" placeholder="Username" />
+          <input required ref={emailRef} className={inputStyle} type="email" placeholder="Email" />
           <input
             ref={passwordRef}
             className={inputStyle}

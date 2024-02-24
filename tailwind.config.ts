@@ -1,4 +1,7 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
+
+/** @type {import('tailwindcss').Config} */
 
 const config: Config = {
   content: [
@@ -10,6 +13,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors:{
+        'light-blue': colors.lightBlue,
+        cyan: colors.cyan,
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -17,6 +24,7 @@ const config: Config = {
       },
     },
   },
+  variants: {},
   plugins: [require('@tailwindcss/forms')],
 };
 export default config;

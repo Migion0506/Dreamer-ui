@@ -48,17 +48,19 @@ export default function Login() {
     <div className="h-screen flex flex-col gap-4 items-center justify-center bg-gray-50">
       <form
         onSubmit={submitHandle}
-        className="flex flex-col gap-5 bg-slate-300 p-8 rounded-lg shadow-xl"
+        className="flex flex-col gap-5 bg-slate-300 p-8 rounded-lg shadow-xl "
       >
         <div className="flex items-center justify-center flex-col gap-6 ">
           <h1 className="font-sans text-4xl font-bold">Login</h1>
           <input
+          required
             ref={emailRef}
             className={inputStyle}
             type="text"
             placeholder="Username or Email"
           />
           <input
+          required
             ref={passwordRef}
             className={inputStyle}
             type="password"

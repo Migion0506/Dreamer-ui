@@ -18,6 +18,7 @@ export const useAuth = () => {
 
 function useProviderAuth() {
   const [user, setUser] = useState({});
+  const [dreams, setDreams] = useState([]);
   const { alert, setAlert, toggleAlert } = useAlert({});
 
   const publicRoutes = ["/login", "/signup"];
@@ -31,15 +32,30 @@ function useProviderAuth() {
       return;
     }
     async function loadUser() {
-      axios.defaults.headers.Authorization = `Bearer ${token}`;
-
       const { data: user } = await axios.get(endPoint.users.account);
       setUser(user);
     }
-    if(token){
-      loadUser()
+    async function loadDream(){
+      const response = await axios.get(endPoint.dreams.get);
+      setDreams(response.data);
     }
-  }, [alert]);
+    if(!axios.defaults.headers.Authorization){
+      axios.defaults.headers.Authorization = `Bearer ${token}`;
+    }
+    if(token){
+      try {
+        loadUser();
+        loadDream();
+      } catch (error) {
+        setAlert({
+          active: true,
+          message: error,
+          type: "error",
+          autoClose: true,
+        });
+      }
+    }
+  }, [alert, axios.defaults.headers.Authorization]);
 
   const signIn = async (email: string, password: string) => {
     const options: any = {
@@ -106,6 +122,7 @@ function useProviderAuth() {
 
   return {
     user,
+    dreams,
     signIn,
     signUp,
     logout,

@@ -13,10 +13,10 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigation = [
-    { name: "Product", href: "#" },
-    { name: "Features", href: "#" },
-    { name: "Marketplace", href: "#" },
-    { name: "Company", href: "#" },
+    { name: "Home", href: "/" },
+    { name: "Discover", href: "/discover" },
+    { name: "Gallery", href: "/gallery" },
+    { name: "Top Rated", href: "/top" },
   ];
   const callsToAction = [
     { name: "Account", href: "/account", icon: FaRegUser },
@@ -24,9 +24,9 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
   ];
   const profileButton = (
     <>
-      <Popover className="relative">
+      <Popover className="relative top-0 z-10">
         <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-          <span>{user.username}</span>
+          <span>{user?.username}</span>
           <img
             className="h-8 w-auto rounded-full"
             src="https://cutecatshq.com/wp-content/uploads/2014/08/That-Was-Good-Yum.jpg"
@@ -99,7 +99,7 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
             <div className="flex lg:flex-1">
               <Link
                 href="/"
-                className="-m-1.5 p-1.5 flex gap-2 items-center justify-center bg-blue-500 rounded-lg text-gray-100"
+                className="-m-1.5 p-1.5 px-2 flex gap-1 items-center justify-center bg-teal-500 rounded-lg text-gray-100"
               >
                 <span className="sr-only">Dreamer</span>
                 <FaZ /> Dreamer
