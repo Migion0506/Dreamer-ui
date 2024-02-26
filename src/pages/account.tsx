@@ -4,6 +4,7 @@ import Header from "@components/header";
 import { useAuth } from "@hooks/useAuth";
 import useFetch from "@hooks/useFetch";
 import endPoint from "@services/api";
+import Link from "next/link";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { MdAdd } from "react-icons/md";
 
@@ -49,7 +50,7 @@ export default function Account() {
               <h1 className="text-xl font-semibold">Your Dreams</h1>
             </div>
             <div className="flex-none">
-              <a
+              <Link
                 href="/create-dream"
                 className="text-xs font-medium px-4 py-2.5 rounded-full hover:opacity-100 hover:shadow-sm bg-teal-500 text-white flex gap-1"
               >
@@ -57,7 +58,7 @@ export default function Account() {
                   <MdAdd className="text-base" />
                   <span>New Dream</span>
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
           {user?.dreams?.map((dream: any) => (
