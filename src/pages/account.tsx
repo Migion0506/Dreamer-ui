@@ -1,6 +1,7 @@
 import Separator from "@common/separator";
 import DreamCard from "@components/dreamCard";
 import Header from "@components/header";
+import NavCreate from "@components/navCreate";
 import { useAuth } from "@hooks/useAuth";
 import useFetch from "@hooks/useFetch";
 import endPoint from "@services/api";
@@ -36,34 +37,21 @@ export default function Account() {
           </button>
           <div className="flex flex-wrap justify-between w-full">
             <span className="flex gap-2 justify-center items-center">
-              {7 + " Followers"} <FaChevronRight />
+              {user?.followers?.length + " Followers"} <FaChevronRight />
             </span>
             <span className="flex gap-2 justify-center items-center">
-              <FaChevronLeft /> {7 + " Following"}
+              <FaChevronLeft /> {user?.followings?.length + " Following"}
             </span>
           </div>
           <Separator />
         </div>
         <div className="flex flex-col gap-2 max-w-lg justify-start items-start">
-          <div className="flex backdrop-blur-3xl bg-white/30 w-full px-5 border-b sm:pt-4 gap-5  justify-between pb-2 items-center">
-            <div className="">
-              <h1 className="text-xl font-semibold">Your Dreams</h1>
-            </div>
-            <div className="flex-none">
-              <Link
-                href="/create-dream"
-                className="text-xs font-medium px-4 py-2.5 rounded-full hover:opacity-100 hover:shadow-sm bg-teal-500 text-white flex gap-1"
-              >
-                <span className="flex items-center space-x-2 rounded-md group hover:rounded-full transition hover:text-neutral-50/75">
-                  <MdAdd className="text-base" />
-                  <span>New Dream</span>
-                </span>
-              </Link>
-            </div>
-          </div>
+          <NavCreate user={user} />
+          <Separator />
           {user?.dreams?.map((dream: any) => (
             <DreamCard key={dream.id} dream={dream} auth={auth} />
-          ))}
+          ))
+          }
         </div>
       </div>
     </>

@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
-import { FaRegUser, FaZ } from "react-icons/fa6";
+import { FaRegUser, FaUser, FaZ } from "react-icons/fa6";
 import Link from "next/link";
 import { HiOutlineMenu } from "react-icons/hi";
-import { RiMenu3Fill } from "react-icons/ri";
+import { RiChatSmile2Fill, RiMenu3Fill } from "react-icons/ri";
 import { IoIosArrowDown, IoMdLogOut } from "react-icons/io";
 import { GiNightSleep } from "react-icons/gi";
+import { MdAccountCircle } from "react-icons/md";
 
 export default function Header({ user, logout }: { user: any, logout:any }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,7 +20,8 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
     { name: "Top Rated", href: "/top" },
   ];
   const callsToAction = [
-    { name: "Account", href: "/account", icon: FaRegUser },
+    { name: "Account", href: "/account", icon: FaUser  },
+    { name: "Chat", href: "/chat", icon: RiChatSmile2Fill  },
     { name: "Dreams", href: "/dreams", icon: GiNightSleep },
   ];
   const profileButton = (
