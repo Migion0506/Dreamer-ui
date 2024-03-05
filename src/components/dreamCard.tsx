@@ -1,6 +1,7 @@
 import Separator from "@common/separator";
-import { FaRegCommentDots, FaShare, FaUser } from "react-icons/fa";
+import { FaShare, FaUser } from "react-icons/fa";
 import Favorite from "./favorite";
+import Comment from "./comments";
 import { MdOutlineReport } from "react-icons/md";
 
 const topics = [
@@ -56,7 +57,7 @@ export default function DreamCard({dream, auth}: {dream:any, auth:any}) {
         <ul className="flex gap-2  items-center justify-center text-xl">
             <Favorite dream={dream} auth={auth} />
           <li>
-            <FaRegCommentDots />
+            <Comment  dream={dream} auth={auth} />
           </li>
         </ul>
         <ul className="flex gap-2 text-lg items-center justify-center">
