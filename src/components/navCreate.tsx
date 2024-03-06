@@ -6,7 +6,7 @@ export default function NavCreate({ user }: { user: any }) {
     <>
       <div className="flex w-full gap-3 justify-center items-center">
         <Link href="/account">
-          <img src="https://cutecatshq.com/wp-content/uploads/2014/08/That-Was-Good-Yum.jpg" className="w-12 h-12 rounded-full" alt="" />
+          <img src="https://cutecatshq.com/wp-content/uploads/2014/08/That-Was-Good-Yum.jpg" className="w-12 max-h-12 rounded-full" alt="" />
         </Link>
         <Link
           href="/create-dream"

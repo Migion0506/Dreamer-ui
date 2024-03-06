@@ -23,6 +23,7 @@ const endPoint = {
   },
   chats: {
     getAll: `${API}/${VERSION}/chats`,
+    delete: (id:string) => `${API}/${VERSION}/chats/${id}`,
     create: `${API}/${VERSION}/chats`,
     getOne: (id: string) => `${API}/${VERSION}/chats/${id}`
   },

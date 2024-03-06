@@ -2,9 +2,10 @@ import { useAuth } from "@hooks/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef } from "react";
+import { GiNightSleep } from "react-icons/gi";
 
 export default function Singup() {
-  const inputStyle = "p-2 bg-transparent border-b-2 border-cyan-900 text-gray-700 outline-none ";
+  const inputStyle = "p-2 border-0 border-b-2 border-b-teal-600 hover:border-b-teal-200 bg-transparent placeholder-white text-white outline-none duration-300 ";
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -38,13 +39,14 @@ export default function Singup() {
   };
 
   return (
-    <div className="h-screen flex flex-col gap-4 items-center justify-center bg-gray-50">
+    <div className="h-screen flex flex-col gap-4 items-center justify-center bg-gradient-to-l from-teal-50 to-teal-100">
       <form
         onSubmit={submitHandle}
-        className="flex items-center justify-center flex-col gap-6 bg-slate-300 p-8 rounded-lg shadow-xl"
+        className="flex items-center justify-center flex-col gap-6 bg-gradient-to-b from-teal-600 to-teal-300 p-8 rounded-lg shadow-xl"
       >
         <div className="flex items-center justify-center flex-col gap-6">
-          <h1 className="font-sans text-4xl font-bold">Create Account</h1>
+          <GiNightSleep className="text-9xl text-teal-50" />
+          <h1 className="font-serif text-white text-4xl font-light">SIGN UP</h1>
           <input required ref={nameRef} className={inputStyle} type="text" placeholder="Name" />
           <input required ref={lastNameRef} className={inputStyle} type="text" placeholder="Last Name" />
           <input required ref={usernameRef} className={inputStyle} type="text" placeholder="Username" />
@@ -56,7 +58,7 @@ export default function Singup() {
             placeholder="Password"
           />
           <button
-            className="bg-cyan-900 font-sans text-white p-2 rounded-lg w-full shadow-xl"
+            className="bg-gray-50 font-sans text-gray-900 p-2 rounded-lg w-full shadow-xl duration-300 hover:bg-teal-200"
             type="submit"
           >
             create Account

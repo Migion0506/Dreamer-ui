@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
-import { FaRegUser, FaUser, FaZ } from "react-icons/fa6";
+import { FaUser, FaZ } from "react-icons/fa6";
 import Link from "next/link";
 import { HiOutlineMenu } from "react-icons/hi";
 import { RiChatSmile2Fill, RiMenu3Fill } from "react-icons/ri";
-import { IoIosArrowDown, IoMdLogOut } from "react-icons/io";
+import { IoIosArrowDown, IoMdLogOut, IoMdSettings } from "react-icons/io";
 import { GiNightSleep } from "react-icons/gi";
 import { MdAccountCircle } from "react-icons/md";
 
@@ -28,7 +28,7 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
     <>
       <Popover className="relative top-0 z-10">
         <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-          <span>{user?.username}</span>
+          <span>{user?.name + " " + user?.lastName}</span>
           <img
             className="h-8 w-auto rounded-full"
             src="https://cutecatshq.com/wp-content/uploads/2014/08/That-Was-Good-Yum.jpg"
@@ -46,17 +46,17 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
           leaveFrom="opacity-100 translate-y-0"
           leaveTo="opacity-0 translate-y-1"
         >
-          <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
+          <Popover.Panel className="absolute z-10 mt-5 flex w-screen max-w-sm -translate-x-2/3 px-4">
             <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
               <div className="p-4">
                 {callsToAction.map((item) => (
                   <div
                     key={item.name}
-                    className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50"
+                    className="group relative flex items-center gap-x-6 rounded-lg p-4 hover:bg-gray-50"
                   >
                     <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
                       <item.icon
-                        className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+                        className="h-6 w-6 text-gray-600 group-hover:text-teal-600"
                         aria-hidden="true"
                       />
                     </div>
@@ -83,6 +83,17 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
                   />
                   Log out
                 </button>
+                <Link
+                  href="/settings"
+                  onClick={logout}
+                  className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-teal-900 hover:bg-gray-100"
+                >
+                  <IoMdSettings
+                    className="h-5 w-5 flex-none text-teal-400"
+                    aria-hidden="true"
+                  />
+                  Settings
+                </Link>
               </div>
             </div>
           </Popover.Panel>

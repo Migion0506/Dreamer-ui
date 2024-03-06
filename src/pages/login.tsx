@@ -2,10 +2,11 @@ import { useAuth } from "@hooks/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
+import { GiNightSleep } from "react-icons/gi";
 
 export default function Login() {
   const inputStyle =
-    "p-2 bg-transparent border-b-2 border-cyan-900 text-gray-700 outline-none ";
+    "p-2 border-0 border-b-2 border-b-teal-500 hover:border-b-teal-200 bg-transparent placeholder-white text-white outline-none duration-300 ";
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -45,13 +46,14 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen flex flex-col gap-4 items-center justify-center bg-gray-50">
+    <div className="h-screen flex flex-col gap-4 items-center justify-center bg-gradient-to-l from-teal-50 to-teal-100">
       <form
         onSubmit={submitHandle}
-        className="flex flex-col gap-5 bg-slate-300 p-8 rounded-lg shadow-xl "
+        className="flex flex-col gap-5 bg-gradient-to-b from-teal-600 to-teal-300 p-8 rounded-lg shadow-xl "
       >
-        <div className="flex items-center justify-center flex-col gap-6 ">
-          <h1 className="font-sans text-4xl font-bold">Login</h1>
+        <div className="flex items-center justify-center flex-col gap-6">
+          <GiNightSleep className="text-9xl text-teal-50" />
+          <h1 className="font-serif text-4xl font-light text-white">LOG IN</h1>
           <input
           required
             ref={emailRef}
@@ -67,17 +69,15 @@ export default function Login() {
             placeholder="Password"
           />
           <button
-            className="bg-cyan-900 font-sans text-white p-2 rounded-lg w-full shadow-xl"
+            className="bg-gray-50 font-sans text-gray-900 p-2 rounded-lg w-full shadow-xl duration-300 hover:bg-teal-200"
             type="submit"
           >
             Login
           </button>
         </div>
-        <div>
-          <Link className="text-gray-600 hover:underline underline-offset-2" href="/signup">
+        <Link className="text-gray-600 hover:underline underline-offset-2 text-center" href="/signup">
             Create an account here.
           </Link>
-        </div>
       </form>
     </div>
   );

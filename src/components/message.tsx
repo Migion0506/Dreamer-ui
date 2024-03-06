@@ -3,6 +3,7 @@ import { useAuth } from "@hooks/useAuth";
 import { Fragment, useEffect, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { IoCheckmarkOutline } from "react-icons/io5";
+import { MdDelete, MdEdit } from "react-icons/md";
 
 export default function Message({
   message,
@@ -27,7 +28,7 @@ export default function Message({
     const headers = {
       Authorization: "Bearer " + auth.token,
     };
-    console.log(message, chatId)
+    console.log(message, chatId);
     delete message.createdAt;
     socket.send(`/app/chat/${chatId}/delete`, headers, JSON.stringify(message));
   };
@@ -57,10 +58,19 @@ export default function Message({
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-20 flex max-w-fit -translate-x-20 px-4">
+              <Popover.Panel className="absolute z-20 flex max-w-fit -translate-x-28 px-4">
                 <div className="flex flex-col gap-y-2 bg-white rounded-lg shadow-lg cursor-pointer">
-                  <div className="px-4 rounded-t-lg py-2 text-sm font-semibold text-gray-900 hover:bg-blue-500 hover:text-white">Edit</div>
-                  <div onClick={deleteHandle} className="px-4 rounded-b-lg py-2 text-sm font-semibold text-gray-900 hover:bg-red-500 hover:text-white">Delete</div>
+                  <div className="px-4 rounded-t-lg py-2 text-sm font-semibold text-gray-900 hover:bg-blue-500 hover:text-white flex gap-2 items-center">
+                    <MdEdit />
+                    Edit
+                  </div>
+                  <div
+                    onClick={deleteHandle}
+                    className="px-4 rounded-b-lg py-2 text-sm font-semibold text-gray-900 hover:bg-red-500 hover:text-white flex gap-2 items-center"
+                  >
+                    <MdDelete />
+                    Delete
+                  </div>
                 </div>
               </Popover.Panel>
             </Transition>
