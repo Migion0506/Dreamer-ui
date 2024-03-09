@@ -46,7 +46,7 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
           leaveFrom="opacity-100 translate-y-0"
           leaveTo="opacity-0 translate-y-1"
         >
-          <Popover.Panel className="absolute z-10 mt-5 flex w-screen max-w-sm -translate-x-2/3 px-4">
+          <Popover.Panel className="absolute z-10 mt-5 flex w-screen max-w-sm lg:-translate-x-2/3 -translate-x-6 px-4">
             <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
               <div className="p-4">
                 {callsToAction.map((item) => (
@@ -103,7 +103,7 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
   );
   return (
     <>
-      <div className="bg-white">
+      <div className="bg-white fixed top-0 w-screen">
         <header className="inset-x-0 top-0 z-50">
           <nav
             className="flex items-center justify-between p-6 lg:px-8"
@@ -112,10 +112,10 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
             <div className="flex lg:flex-1">
               <Link
                 href="/"
-                className="-m-1.5 p-1.5 px-2 flex gap-1 items-center justify-center bg-teal-500 rounded-lg text-gray-100"
+                className="-m-1.5 p-1.5 px-2 flex gap-1 items-center justify-center text-black text-xl hover:text-gray-500 duration-200"
               >
                 <span className="sr-only">Dreamer</span>
-                <FaZ /> Dreamer
+                <GiNightSleep className="text-2xl" /> Dreamer
               </Link>
             </div>
             <div className="flex lg:hidden">

@@ -2,6 +2,8 @@ import { Popover, Transition } from "@headlessui/react";
 import { useAuth } from "@hooks/useAuth";
 import endPoint from "@services/api";
 import axios from "axios";
+import { formatRelative, subDays } from "date-fns";
+import { enUS, es } from "date-fns/locale";
 import { Fragment, useEffect, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { IoCheckmarkOutline } from "react-icons/io5";
@@ -53,6 +55,15 @@ export default function ChatCard({
     }
   }
 
+  const getMessageDate = () =>{
+    const date = chat?.messages[chat.messages.length-1]?.createdAt 
+    return formatRelative(subDays(date, 3), new Date(), {locale: enUS})
+  }
+  const getChatDate = () =>{
+    const date = chat?.createdAt 
+    return formatRelative(subDays(date, 3), new Date(), {locale: enUS})
+  }
+
   return (
     <>
       <div
@@ -68,9 +79,7 @@ export default function ChatCard({
           <div className="flex w-full flex-wrap relative">
             <h1>{friend?.name + " " + friend?.lastName}</h1>
             <span className="text-xs self-end absolute top-1 right-2">
-              {new Date(messages[messages.length - 1]?.createdAt).getHours() +
-                ":" +
-                new Date(messages[messages.length - 1]?.createdAt).getMinutes()}
+              {(messages.length != 0) ? getMessageDate() :  getChatDate()}
             </span>
           </div>
           <div className="flex flex-col w-full">

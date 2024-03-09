@@ -14,6 +14,8 @@ import Link from "next/link";
 import { FaAngleLeft, FaZ } from "react-icons/fa6";
 import { HiOutlineMenu } from "react-icons/hi";
 import { RiChatSmile2Fill, RiMenu3Fill } from "react-icons/ri";
+import {useSearchParams} from 'next/navigation'
+import { useRouter } from "next/router";
 
 export default function Chat() {
   const [chat, setChat] = useState<string>("");
@@ -22,11 +24,12 @@ export default function Chat() {
   const [socket, setSocket] = useState<any>();
   const [messages, setMessages] = useState<any[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const [subscriptions, setSubscriptions] = useState<any[]>([])
+  const searchParams = useSearchParams()
   const node = useRef<any>(null);
-
+  const router = useRouter()
   const textRef = useRef<any>();
-  const { token, user, logout }: any = useAuth();
+  const { token, user }: any = useAuth();
 
   useEffect(() => {
     async function getChats() {
@@ -36,8 +39,14 @@ export default function Chat() {
       const { data: rta } = await axios.get(endPoint.chats.getAll, { headers });
       setChats(rta);
     }
+    async function loadChat(){
+      const tabChat = searchParams?.get("tab")
+      if(!tabChat) return;
+      connect(tabChat)
+    }
+    loadChat()
     getChats();
-  }, []);
+  }, [router.isReady]);
 
   async function connect(to: string) {
     setChat(to);
@@ -50,23 +59,27 @@ export default function Chat() {
     const headers = {
       Authorization: "Bearer " + token,
     };
-    const socket = new SockJS("http://localhost:3030/api/v1/chat", {
+    const lsocket = new SockJS("http://localhost:3030/api/v1/chat", {
       transports: ["xhr-streaming"],
       headers,
     });
-    const ws = Stomp.over(socket);
+    subscriptions.forEach(sub => sub.unsubscribe())
+    setSubscriptions([])
+    const ws = Stomp.over(lsocket);
     setSocket(ws);
     ws.connect(
       headers,
       (frame: any) => {
         setConnected(true);
-        ws.subscribe(`/topic/messages/${to}`, (message: any) => {
+        const messageSub = ws.subscribe(`/topic/messages/${to}`, (message: any) => {
           setMessages((old) => [...old, JSON.parse(message.body)]);
         });
-        ws.subscribe(`/topic/delete/${to}`, (message: any) => {
+        const deleteSub = ws.subscribe(`/topic/delete/${to}`, (message: any) => {
           const body = JSON.parse(message.body);
-          setMessages(messages.filter((element) => element.id !== body.id));
+          const filter:any[] = messages.filter((element) => element.id !== body.id)
+          setMessages(filter);
         });
+        setSubscriptions([messageSub, deleteSub])
       },
       headers
     );
@@ -90,7 +103,6 @@ export default function Chat() {
 
   return (
     <>
-      <Header user={user} logout={logout} />
       <div className="flex flex-col gap-2 w-full h-[89vh] lg:flex-row">
         <div className="w-1/3 h-full flex flex-col gap-5 p-2">
           <header className="inset-x-0 top-0 z-50">

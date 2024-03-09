@@ -10,7 +10,18 @@ const endPoint = {
   users: {
     account: `${API}/${VERSION}/users/account`,
     create: `${API}/${VERSION}/users`,
+    discover: `${API}/${VERSION}/users/discover`,
     chats: (id:string) => `${API}/${VERSION}/users/chat/${id}`,
+    findOne: (id:any) => `${API}/${VERSION}/users/${id}`,
+  },
+  follow: {
+    follow: `${API}/${VERSION}/follow`,
+    unFollow: (username:string) => `${API}/${VERSION}/follow/${username}`
+  },
+  topics: {
+    create: `${API}/${VERSION}/topics`,
+    delete: (id:string) => `${API}/${VERSION}/topics/${id}`,
+    createMany: `${API}/${VERSION}/topics/all`
   },
   dreams: {
     create: `${API}/${VERSION}/dreams`,

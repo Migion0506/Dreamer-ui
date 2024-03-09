@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 
-export default function CreateDream() {
+export default function Post() {
   const auth: any = useAuth();
   const router = useRouter();
 
@@ -25,31 +25,36 @@ export default function CreateDream() {
     const topics = topicsRef?.current?.value
     const publicDream = publicRef?.current?.checked
 
-    const rta = await axios.post(endPoint.dreams.create, {
-      title,
-      content,
-      public: publicDream,
-      pictureUrl: 'https://i.ytimg.com/vi/GKvV8vx3_QE/maxresdefault.jpg'
-    }).then(data => {
-      auth.setAlert({
-          active: true,
-          message: "Dream created successfully",
-          type: "success",
-          autoClose: true,
+    try {
+      const {data} = await axios.post(endPoint.dreams.create, {
+        title,
+        content,
+        public: publicDream,
+        pictureUrl: 'https://i.ytimg.com/vi/GKvV8vx3_QE/maxresdefault.jpg'
       })
-      setTimeout(() => {
-        router.push('/account')
-      }, 1000)
-    }).catch(error => {
+
+      const topicsArr = topics?.split(/[, ]+/)
+      const sendTopics = topicsArr?.map(topic => ({topic, dreamId: data.id}))
+
+      await axios.post(endPoint.topics.createMany, sendTopics)
+
+      auth.setAlert({
+        active: true,
+        message: "Dream created successfully",
+        type: "success",
+        autoClose: true,
+    })
+    setTimeout(() => {
+      router.push('/account')
+    }, 1000)
+    } catch (error:any) {
       auth.setAlert({
         active: true,
         message: 'Error creating dream: '+error.message,
         type: 'error',
         autoClose: true,
       })
-    })
-
-    console.log(rta)
+    }
 
   }
   return (
@@ -157,6 +162,8 @@ export default function CreateDream() {
                 </label>
                 <div className="mt-2">
                   <input
+                    required
+                    ref={topicsRef}
                     type="text"
                     name="topics"
                     id="topics"

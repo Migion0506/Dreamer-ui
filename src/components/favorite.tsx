@@ -61,11 +61,11 @@ export default function Favorite({dream, auth}: {dream:any, auth:any}) {
   };
   return (
     <>
-      <div className="flex gap-1 justify-center items-center">
-        <li className="hover:cursor-pointer" onClick={likeHandler}>
+      <div className="flex gap-1 rounded-lg justify-center p-3 items-center w-full h-full cursor-pointer hover:bg-red-500 hover:text-white" onClick={likeHandler}>
+        <li>
           {likeIcon.icon}
         </li>
-        <li className="font-sans text-lg">
+        <li className="ml-1 text-sm">
           {likeIcon.count}
         </li>
       </div>
