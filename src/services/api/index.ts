@@ -21,6 +21,11 @@ const endPoint = {
     create: `${API}/${VERSION}/favorite`,
     delete: (id: string) => `${API}/${VERSION}/favorite/${id}`
   },
+  comments: {
+    create: `${API}/${VERSION}/comments`,
+    edit: (id: string) => `${API}/${VERSION}/comments/${id}`,
+    delete: (id: string) => `${API}/${VERSION}/comments/${id}`
+  },
   chats: {
     getAll: `${API}/${VERSION}/chats`,
     delete: (id:string) => `${API}/${VERSION}/chats/${id}`,
