@@ -14,8 +14,9 @@ import Link from "next/link";
 import { FaAngleLeft, FaZ } from "react-icons/fa6";
 import { HiOutlineMenu } from "react-icons/hi";
 import { RiChatSmile2Fill, RiMenu3Fill } from "react-icons/ri";
-import {useSearchParams} from 'next/navigation'
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { motion, useScroll } from "framer-motion";
 
 export default function Chat() {
   const [chat, setChat] = useState<string>("");
@@ -24,12 +25,13 @@ export default function Chat() {
   const [socket, setSocket] = useState<any>();
   const [messages, setMessages] = useState<any[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [subscriptions, setSubscriptions] = useState<any[]>([])
-  const searchParams = useSearchParams()
+  const [subscriptions, setSubscriptions] = useState<any[]>([]);
+  const searchParams = useSearchParams();
   const node = useRef<any>(null);
-  const router = useRouter()
+  const router = useRouter();
   const textRef = useRef<any>();
   const { token, user }: any = useAuth();
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     async function getChats() {
@@ -39,16 +41,15 @@ export default function Chat() {
       const { data: rta } = await axios.get(endPoint.chats.getAll, { headers });
       setChats(rta);
     }
-    async function loadChat(){
-      const tabChat = searchParams?.get("tab")
-      if(!tabChat) return;
-      connect(tabChat)
+    async function loadChat() {
+      const tabChat = searchParams?.get("tab");
+      if (!tabChat) return;
+      connect(tabChat);
     }
-    loadChat()
+    loadChat();
     getChats();
   }, [router.isReady]);
-
-  async function connect(to: string) {
+  async function changeChatSelected(to: string) {
     setChat(to);
     const { data } = await axios.get(endPoint.chats.getOne(to));
     const messagesRta = data.messages.sort(
@@ -56,6 +57,9 @@ export default function Chat() {
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
     setMessages(messagesRta);
+  }
+
+  async function connect(to: string) {
     const headers = {
       Authorization: "Bearer " + token,
     };
@@ -63,33 +67,38 @@ export default function Chat() {
       transports: ["xhr-streaming"],
       headers,
     });
-    subscriptions.forEach(sub => sub.unsubscribe())
-    setSubscriptions([])
+    subscriptions.forEach((sub) => sub.unsubscribe());
+    setSubscriptions([]);
     const ws = Stomp.over(lsocket);
     setSocket(ws);
     ws.connect(
       headers,
       (frame: any) => {
-        setConnected(true);
-        const messageSub = ws.subscribe(`/topic/messages/${to}`, (message: any) => {
-          setMessages((old) => [...old, JSON.parse(message.body)]);
-        });
-        const deleteSub = ws.subscribe(`/topic/delete/${to}`, (message: any) => {
-          const body = JSON.parse(message.body);
-          const filter:any[] = messages.filter((element) => element.id !== body.id)
-          setMessages(filter);
-        });
-        setSubscriptions([messageSub, deleteSub])
+        const messageSub = ws.subscribe(
+          `/topic/messages/${to}`,
+          (message: any) => {
+            setMessages((old) => [...old, JSON.parse(message.body)]);
+          }
+        );
+        const deleteSub = ws.subscribe(
+          `/topic/delete/${to}`,
+          (message: any) => {
+            const body = message.body;
+            const index = messages.findIndex((element) => element.id === body);
+            setMessages(messages.splice(index, 1));
+          }
+        );
+        setSubscriptions([messageSub, deleteSub]);
       },
       headers
     );
   }
-  function disconnect(){
-    socket.disconnect()
-    setSocket(null)
-    setChat('')
-    setMessages([])
-    setConnected(false)
+  function disconnect() {
+    socket.disconnect();
+    setSocket(null);
+    setChat("");
+    setMessages([]);
+    setConnected(false);
   }
   function sendMessage(e: any) {
     e.preventDefault();
@@ -124,10 +133,18 @@ export default function Chat() {
                 {chats?.map((room, key) => (
                   <ChatCard
                     chat={room}
+                    lastMessage={room.messages.sort(
+                      (a: any, b: any) =>
+                        new Date(a.createdAt).getTime() -
+                        new Date(b.createdAt).getTime()
+                    )}
+                    setChat={changeChatSelected}
+                    setConnected={setConnected}
+                    ws={socket}
+                    token={token}
                     user={user}
                     key={key}
                     connect={connect}
-                    disconnect={disconnect}
                   />
                 ))}
               </div>
@@ -160,10 +177,18 @@ export default function Chat() {
                       {chats?.map((room, key) => (
                         <ChatCard
                           chat={room}
+                          lastMessage={room.messages.sort(
+                            (a: any, b: any) =>
+                              new Date(a.createdAt).getTime() -
+                              new Date(b.createdAt).getTime()
+                          )}
+                          setChat={changeChatSelected}
+                          setConnected={setConnected}
+                          ws={socket}
+                          token={token}
                           user={user}
                           key={key}
                           connect={connect}
-                          disconnect={disconnect}
                         />
                       ))}
                     </div>
@@ -174,7 +199,9 @@ export default function Chat() {
           </header>
         </div>
         {connected ? (
-          <div className="flex-1 border-l-2 border-l-gray-500 shadow-sm flex flex-col justify-end items-center min-h-full">
+          <div
+            className="flex-1 border-l-2 border-l-gray-500 shadow-sm flex flex-col justify-end items-center min-h-full"
+          >
             <ul
               ref={node}
               className="w-full h-full overflow-auto flex flex-col gap-1 p-2"

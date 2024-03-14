@@ -1,33 +1,34 @@
-import Separator from "@common/separator";
 import { FaShare, FaUser } from "react-icons/fa";
 import Favorite from "./favorite";
 import Comment from "./comments";
 import { MdOutlineReport } from "react-icons/md";
 import Tag from "@common/tag";
 import { enUS } from "date-fns/locale";
-import { formatRelative, subDays } from "date-fns";
-
-const topics = [
-  "action",
-  "romance",
-  "adventure",
-  "fantasy",
-  "horror",
-  "comedy",
-  "drama",
-  "thriller",
-];
+import { formatDistance, subDays } from "date-fns";
+import endPoint from "@services/api";
+import useFetch from "@hooks/useFetch";
+import { motion } from "framer-motion";
 
 export default function DreamCard({ dream, auth }: { dream: any; auth: any }) {
   const btnStyle = "w-full h-full rounded-lg flex justify-center"
+  const creator = useFetch(endPoint.users.findOne(dream?.createdBy))
   function getDate() {
     const date = new Date(dream.createdAt);
-    return formatRelative(subDays(date, 3), new Date(), { locale: enUS });
+    return formatDistance(subDays(date, 0), new Date(), { locale: enUS });
   }
   return (
     <>
-      <div className="flex flex-col gap-2 bg-white duration-300 transition rounded-lg w-full">
-        <nav className="flex justify-between gap-2 p-3">
+      <motion.div layout style={
+        {
+          borderRadius: 15
+        }
+      } whileHover={
+        {
+          scale:1.2,
+          transition: { duration: 0.3 }
+        }
+      } className="flex flex-col gap-2 bg-white duration-300 transition w-full shadow-lg">
+        <nav className="flex justify-between gap-2 pt-3 px-3">
           <ul className="flex flex-wrap gap-2 text-sm items-center justify-center">
             <li>
               <img
@@ -38,7 +39,7 @@ export default function DreamCard({ dream, auth }: { dream: any; auth: any }) {
             </li>
             <li>
               <div className="flex flex-col gap-1">
-                <span>{dream.createdBy}</span>
+                <span>{creator?.name + " " + creator?.lastName}</span>
                 <span>{getDate()}</span>
               </div>
             </li>
@@ -50,14 +51,14 @@ export default function DreamCard({ dream, auth }: { dream: any; auth: any }) {
             </li>
           </ul>
         </nav>
-        <div className="flex flex-col gap-2 p-3">
+        <div className="flex flex-col gap-2 py-1 px-3">
           <h1 className="font-semibold text-xl">{dream.title}</h1>
+          <p className="text-sm">{dream.content}</p>
           <div className="flex flex-wrap gap-1">
             {dream.topics.map((topic: any, key: any) => (
-              <Tag name={topic.topic} custom="bg-teal-500 text-white" />
+              <Tag key={key} name={topic.topic} custom="bg-teal-500 text-white" />
             ))}
           </div>
-          <p className="text-sm">{dream.content}</p>
         </div>
         <img src={dream.pictureUrl} alt="" className="w-fit max-h-full" />
         <nav className="flex justify-between p-1 gap-2 w-full items-center text-xl">
@@ -71,7 +72,7 @@ export default function DreamCard({ dream, auth }: { dream: any; auth: any }) {
             <FaShare /> 
           </ul>
         </nav>
-      </div>
+      </motion.div>
     </>
   );
 }

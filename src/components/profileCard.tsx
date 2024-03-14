@@ -8,11 +8,13 @@ import { PiPlugsConnected } from "react-icons/pi";
 import { RiChatSmile2Fill } from "react-icons/ri";
 import { VscDebugDisconnect } from "react-icons/vsc";
 import { useRouter } from "next/router";
+import {motion} from 'framer-motion' 
 
 export default function ProfileCard({ user }: { user: any }) {
   const router = useRouter()
   const {user:account, token}:any = useAuth()
   const {connect, followHandler} = useFollow(account, user)
+
   const paragraph =
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, unde. Similique id a at autem earum itaque, ipsa dicta libero veniam numquam maxime vitae inventore sequi qui, error impedit incidunt. Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, unde. Similique id a at autem earum itaque, ipsa dicta libero veniam numquam maxime vitae inventore sequi qui, error impedit incidunt.";
   const [description, setDescription] = useState<any>();
@@ -38,7 +40,17 @@ export default function ProfileCard({ user }: { user: any }) {
   }
   const date = new Date(user?.createdAt);
   return (
-    <div className="max-w-lg flex flex-col gap-5 p-10 bg-white lg:rounded-xl shadow-lg justify-center items-center relative">
+    <motion.div whileHover={
+      {
+        scale: 1.1,
+        transition: {
+          type: "tween",
+          stiffness: 400,
+          damping: 10
+        },
+        zIndex: 10
+      }
+    } className="max-w-lg flex flex-col gap-5 p-10 bg-white lg:rounded-xl shadow-lg justify-center items-center relative">
       <img
         src="https://wallpaperaccess.com/full/967689.jpg"
         alt=""
@@ -60,7 +72,7 @@ export default function ProfileCard({ user }: { user: any }) {
         />
       </div>
       <div className="flex flex-col gap-5 w-full h-full justify-center items-center">
-        <div className="flex flex-col items-center gap-5 z-10">
+        <div className="flex flex-col items-center gap-5">
           <div className="flex flex-col gap-1 items-center">
             <span className="text-lg font-light ">{"@" + user?.username}</span>
             <h1 className="font-sans text-2xl font-semibold">
@@ -90,6 +102,6 @@ export default function ProfileCard({ user }: { user: any }) {
           View Profile
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }

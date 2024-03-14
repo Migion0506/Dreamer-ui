@@ -9,6 +9,7 @@ import { RiChatSmile2Fill, RiMenu3Fill } from "react-icons/ri";
 import { IoIosArrowDown, IoMdLogOut, IoMdSettings } from "react-icons/io";
 import { GiNightSleep } from "react-icons/gi";
 import { MdAccountCircle } from "react-icons/md";
+import { FaStar } from "react-icons/fa";
 
 export default function Header({ user, logout }: { user: any, logout:any }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -23,10 +24,11 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
     { name: "Account", href: "/account", icon: FaUser  },
     { name: "Chat", href: "/chat", icon: RiChatSmile2Fill  },
     { name: "Dreams", href: "/dreams", icon: GiNightSleep },
+    { name: "Favorites", href: "/favorites", icon: FaStar },
   ];
   const profileButton = (
     <>
-      <Popover className="relative top-0 z-10">
+      <Popover className="relative top-0 z-20">
         <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
           <span>{user?.name + " " + user?.lastName}</span>
           <img
@@ -101,9 +103,9 @@ export default function Header({ user, logout }: { user: any, logout:any }) {
       </Popover>
     </>
   );
-  return (
+  return user.name && (
     <>
-      <div className="bg-white fixed top-0 w-screen">
+      <div className="bg-white fixed top-0 w-screen z-20">
         <header className="inset-x-0 top-0 z-50">
           <nav
             className="flex items-center justify-between p-6 lg:px-8"

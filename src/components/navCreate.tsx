@@ -1,12 +1,20 @@
 import Link from "next/link";
-import { MdAdd } from "react-icons/md";
-
+import { motion } from "framer-motion";
 export default function NavCreate({ user }: { user: any }) {
   return (
     <>
-      <div className="flex w-full gap-3 justify-center items-center">
+      <motion.div
+        layout
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="flex w-full gap-3 justify-center items-center"
+      >
         <Link href="/account">
-          <img src="https://cutecatshq.com/wp-content/uploads/2014/08/That-Was-Good-Yum.jpg" className="w-12 max-h-12 rounded-full" alt="" />
+          <img
+            src="https://cutecatshq.com/wp-content/uploads/2014/08/That-Was-Good-Yum.jpg"
+            className="w-12 max-h-12 rounded-full"
+            alt=""
+          />
         </Link>
         <Link
           href="/post"
@@ -18,7 +26,7 @@ export default function NavCreate({ user }: { user: any }) {
             </h1>
           </div>
         </Link>
-      </div>
+      </motion.div>
     </>
   );
 }

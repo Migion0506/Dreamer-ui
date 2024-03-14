@@ -4,18 +4,32 @@ import endPoint from "@services/api";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 
 export default function Post() {
   const auth: any = useAuth();
   const router = useRouter();
 
+  const [topics, setTopics] = useState<any[]>([]);
+
   const titleRef = useRef<HTMLInputElement>(null)
   const aboutRef = useRef<HTMLTextAreaElement>(null)
   const topicsRef = useRef<HTMLInputElement>(null)
   const privateRef = useRef<HTMLInputElement>(null)
   const publicRef = useRef<HTMLInputElement>(null)
+
+  const handleTopics = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.value.includes(',')){
+      const t = e.target.value.split(',')[0]
+      setTopics([...topics, t])
+      e.target.value = '' 
+    }
+  }
+
+  const removeTopic = (id:string) => {
+    setTopics(topics.filter(topic => topic !== id))
+  }
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,10 +74,10 @@ export default function Post() {
   return (
     <>
       <Header user={auth.user} logout={auth.logout} />
-      <form onSubmit={submitHandler} className="flex flex-col gap-5 justify-center items-center">
+      <form onSubmit={submitHandler} className="flex flex-col gap-5 justify-center items-center p-2">
         <div className="py-8 flex flex-col gap-5 justify-center items-center">
           <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">
+            <h2 className="text-base font-dancing leading-7 text-gray-900">
               Save your dream
             </h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -160,15 +174,30 @@ export default function Post() {
                 >
                   Topics
                 </label>
-                <div className="mt-2">
+                <div className="mt-2 flex border-b-2 p-2 gap-2 max-w-lg min-w-full overflow-auto">
+                  <div className="flex gap-2">
+                    {topics.map((topic, key) => (
+                      <div onClick={() => removeTopic(topic)} key={key} className="bg-teal-500 text-white p-1 px-2 rounded-lg hover:bg-red-500 duration-300">
+                        {topic}
+                      </div>
+                    ))}
+                  </div>
                   <input
+                    onChange={handleTopics}
                     required
                     ref={topicsRef}
                     type="text"
+                    placeholder="Add topics"
+                    onKeyDown={(e:any) => {
+                      if(e.key !== 'Enter') return
+                      const value = topicsRef.current?.value
+                      setTopics([...topics, value]); 
+                      e.target.value = ''
+                    }}
                     name="topics"
                     id="topics"
                     autoComplete="topics"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block min-w-32 !outline-0 rounded-md border-none !outline-none py-1.5 text-gray-900 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -225,7 +254,7 @@ export default function Post() {
             Cancel
           </Link>
           <button
-            type="submit"
+            type="button"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Save

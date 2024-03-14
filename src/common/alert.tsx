@@ -16,7 +16,7 @@ export const Alert = ({
     <>
       {alert.active && alert.type === "alert" && (
         <div
-          className="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 bottom-10 right-10 sticky"
+          className="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 bottom-5 right-3 fixed"
           role="alert"
         >
           <p className="font-bold">{alert.type}</p>
@@ -24,7 +24,7 @@ export const Alert = ({
         </div>
       )}
       {alert.active && alert.type === "error" && (
-        <div role="alert" className="absolute bottom-5 right-0">
+        <div role="alert" className="fixed bottom-5 right-3">
           <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
             {alert.type}
           </div>
@@ -35,7 +35,7 @@ export const Alert = ({
       )}
       {alert.active && alert.type === "success" && (
         <div
-          className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md sticky top-0 z-10"
+          className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md fixed bottom-5 right-3 z-10"
           role="alert"
         >
           <div className="flex">

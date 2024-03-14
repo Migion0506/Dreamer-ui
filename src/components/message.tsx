@@ -1,9 +1,11 @@
 import { Popover, Transition } from "@headlessui/react";
 import { useAuth } from "@hooks/useAuth";
+import { formatRelative, subHours } from "date-fns";
 import { Fragment, useEffect, useState } from "react";
 import { CiMenuKebab } from "react-icons/ci";
 import { IoCheckmarkOutline } from "react-icons/io5";
 import { MdDelete, MdEdit } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Message({
   message,
@@ -28,66 +30,69 @@ export default function Message({
     const headers = {
       Authorization: "Bearer " + auth.token,
     };
-    console.log(message, chatId);
-    delete message.createdAt;
-    socket.send(`/app/chat/${chatId}/delete`, headers, JSON.stringify(message));
+    socket.send(`/app/chat/${chatId}/delete/${message.id}`, headers);
   };
+  const getHour = formatRelative(subHours(message.createdAt, 0), new Date());
   return (
     <>
-      <div
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setShowMenu(!showMenu);
-        }}
-        className={
-          "flex flex-col gap-1 rounded-lg p-2 w-fit max-w-lg relative " +
-          alignment
-        }
-      >
-        {isOwn && (
-          <Popover className="absolute top-2 right-1">
-            <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-              <CiMenuKebab className="h-5 w-5 text-white" aria-hidden="true" />
-            </Popover.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <Popover.Panel className="absolute z-20 flex max-w-fit -translate-x-28 px-4">
-                <div className="flex flex-col gap-y-2 bg-white rounded-lg shadow-lg cursor-pointer">
-                  <div className="px-4 rounded-t-lg py-2 text-sm font-semibold text-gray-900 hover:bg-blue-500 hover:text-white flex gap-2 items-center">
-                    <MdEdit />
-                    Edit
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y:0 }}
+          exit={{ opacity: 0, y:100 }}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            setShowMenu(!showMenu);
+          }}
+          className={
+            "flex flex-col gap-1 rounded-lg p-2 w-fit max-w-lg relative " +
+            alignment
+          }
+        >
+          {isOwn && (
+            <Popover className="absolute top-2 right-1">
+              <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+                <CiMenuKebab
+                  className="h-5 w-5 text-white"
+                  aria-hidden="true"
+                />
+              </Popover.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <Popover.Panel className="absolute z-20 flex max-w-fit -translate-x-28 px-4">
+                  <div className="flex flex-col gap-y-2 bg-white rounded-lg shadow-lg cursor-pointer">
+                    <div className="px-4 rounded-t-lg py-2 text-sm font-semibold text-gray-900 hover:bg-blue-500 hover:text-white flex gap-2 items-center">
+                      <MdEdit />
+                      Edit
+                    </div>
+                    <div
+                      onClick={deleteHandle}
+                      className="px-4 rounded-b-lg py-2 text-sm font-semibold text-gray-900 hover:bg-red-500 hover:text-white flex gap-2 items-center"
+                    >
+                      <MdDelete />
+                      Delete
+                    </div>
                   </div>
-                  <div
-                    onClick={deleteHandle}
-                    className="px-4 rounded-b-lg py-2 text-sm font-semibold text-gray-900 hover:bg-red-500 hover:text-white flex gap-2 items-center"
-                  >
-                    <MdDelete />
-                    Delete
-                  </div>
-                </div>
-              </Popover.Panel>
-            </Transition>
-          </Popover>
-        )}
-        <p className=" mr-4">{message.text}</p>
-        <div className="flex gap-1 text-xs self-end justify-center items-center">
-          <span className="">
-            {new Date(message.createdAt).getHours() +
-              ":" +
-              new Date(message.createdAt).getMinutes()}
-          </span>
-          <span>
-            <IoCheckmarkOutline />
-          </span>
-        </div>
-      </div>
+                </Popover.Panel>
+              </Transition>
+            </Popover>
+          )}
+          <p className=" mr-4">{message.text}</p>
+          <div className="flex gap-1 text-xs self-end justify-center items-center">
+            <span className="">{getHour}</span>
+            <span>
+              <IoCheckmarkOutline />
+            </span>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 }

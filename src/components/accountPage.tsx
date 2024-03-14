@@ -28,7 +28,7 @@ export default function AccountPage({ user }: { user: any }) {
   }
   return (
     <>
-      <div className="flex flex-wrap justify-center gap-10 items-start p-5">
+      <div className="flex flex-wrap justify-center gap-10 items-start p-5 bg-[#e9e9e9]">
         <div className="flex flex-col gap-3 max-w-fit">
           <img
             className="h-64 w-64 rounded-full"

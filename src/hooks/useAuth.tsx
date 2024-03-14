@@ -45,7 +45,7 @@ function useProviderAuth() {
     if(token){
       try {
         loadUser();
-        loadDream();
+        //loadDream();
       } catch (error) {
         setAlert({
           active: true,
