@@ -36,7 +36,6 @@ export default function Post() {
 
     const title = titleRef?.current?.value
     const content = aboutRef?.current?.value
-    const topics = topicsRef?.current?.value
     const publicDream = publicRef?.current?.checked
 
     try {
@@ -47,9 +46,7 @@ export default function Post() {
         pictureUrl: 'https://i.ytimg.com/vi/GKvV8vx3_QE/maxresdefault.jpg'
       })
 
-      const topicsArr = topics?.split(/[, ]+/)
-      const sendTopics = topicsArr?.map(topic => ({topic, dreamId: data.id}))
-
+      const sendTopics = topics?.map(topic => ({topic, dreamId: data.id}))
       await axios.post(endPoint.topics.createMany, sendTopics)
 
       auth.setAlert({
@@ -77,10 +74,10 @@ export default function Post() {
       <form onSubmit={submitHandler} className="flex flex-col gap-5 justify-center items-center p-2">
         <div className="py-8 flex flex-col gap-5 justify-center items-center">
           <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base font-dancing leading-7 text-gray-900">
+            <h2 className="text-3xl font-semibold font-dancing leading-7 text-gray-900">
               Save your dream
             </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
+            <p className="mt-1 text-lg font-dancing leading-6 text-gray-600">
               This information will be saved encrypted and only visible to you
               and the people you share it with.
             </p>
@@ -254,6 +251,7 @@ export default function Post() {
             Cancel
           </Link>
           <button
+          onClick={(e:any) => submitHandler(e)}
             type="button"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >

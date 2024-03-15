@@ -41,7 +41,7 @@ export default function ChatCard({
       const { data } = await axios.get(endPoint.users.chats(chat.id));
       setFriend(data.filter((u: any) => u.username !== user.username)[0]);
       setMessage(lastMessage[lastMessage.length-1]);
-      setDate(formatDistance(new Date(lastMessage[lastMessage.length-1].createdAt), new Date()));
+      setDate(formatDistance(new Date(lastMessage[lastMessage.length-1]?.createdAt || chat.createdAt), new Date()));
     }
     getUsers();
     connectLocalChat(chat.id)
